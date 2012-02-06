@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script>
+      function save(user, pwd) {
+          if (typeof(user) != 'string' || typeof(pwd) != 'string')
+              localStorage.auth = undefined;
+          else
+              localStorage.auth = btoa(user + ':' + pwd);
+      }
+
+      function getAuth() {
+          return localStorage.auth;
+      }
+    </script>
+  </head>
+  <body>
+  </body>
+</html>

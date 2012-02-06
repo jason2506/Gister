@@ -1,0 +1,22 @@
+{
+    "name": "Gister",
+    "version": "0.1.0",
+    "description": "Provides a simple interface to access github:gist.",
+    "update_url": "https://raw.github.com/jason2506/Gister/master/updates.xml",
+    "icons": {
+        "128": "icons/icon_128.png",
+         "48": "icons/icon_48.png",
+         "16": "icons/icon_16.png"
+    },
+    "background_page": "background.html",
+    "browser_action": {
+        "default_icon": "icons/icon_48.png",
+        "default_popup": "popup.html"
+    },
+    "permissions": [
+        "tabs",
+        "https://github.com/",
+        "https://api.github.com/"
+    ]
+}
+

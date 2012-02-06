@@ -1,0 +1,130 @@
+(function() {
+    var gister = new Gister();
+    const SELECTOR = {
+        pages: '.page',
+
+        loginForm: '#login-form',
+        loginPage: '#login-page',
+        loginUser: '#login-user',
+        loginPwd: '#login-pwd',
+
+        overviewPage: '#overview-page',
+        overviewNewGist: '#overview-new-gist',
+        overviewLoading: '#overview-loading',
+        overviewGists: '#overview-gists',
+        overviewSearch: '#overview-search',
+        overviewFilter: '#overview-filters'
+    }
+
+    var pages = $(SELECTOR.pages);
+    pages.hide();
+    if (gister.accessible()) {
+        $(SELECTOR.overviewPage).show();
+        gister.getAll(function(gists) {
+            $(SELECTOR.overviewLoading).remove();
+            displayGists(gists);
+        });
+    }
+    else {
+        $(SELECTOR.loginPage).show();
+    }
+
+    $(SELECTOR.loginForm).submit(function() {
+        var user = $(SELECTOR.loginUser).val();
+        var pwd = $(SELECTOR.loginPwd).val();
+        gister.save(user, pwd);
+    });
+
+    $(SELECTOR.overviewPage + ' h1').click(function() {
+        openUrl('https://gist.github.com/mine');
+    });
+
+    $(SELECTOR.overviewNewGist).click(function() {
+        openUrl('https://gist.github.com');
+    });
+
+    $(SELECTOR.overviewSearch).on('input', updateFilter);
+
+    $(SELECTOR.overviewFilter + ' a').click(function() {
+        $(SELECTOR.overviewFilter + ' .current').removeClass('current');
+        $(this).parent().addClass('current');
+
+        updateFilter();
+    });
+
+    function displayGists(gists) {
+        var list = $(SELECTOR.overviewGists);
+        for (var index = 0; index < gists.length; index++) {
+            var item = generateGistItem(gists[index]);
+            list.append(item);
+        }
+
+        gister.getStarred(function(gists) {
+            for (var index = 0; index < gists.length; index++)
+                $('#gist-' + gists[index].id).addClass('starred');
+        });
+    }
+
+    function generateGistItem(gist) {
+        var item = $('<li>')
+            .addClass(gist.public ? 'public' : 'private')
+            .attr('id', 'gist-' + gist.id)
+            .attr('rel', gist.html_url)
+            .click(function() {
+                var url = $(this).attr('rel');
+                openUrl(url);
+            });
+
+        var itemInfo = $('<span>')
+            .addClass('info');
+        item.append(itemInfo);
+
+        var itemLink = $('<span>')
+            .addClass('id')
+            .text('gist:' + gist.id);
+        itemInfo.append(itemLink);
+
+        var itemDescr = $('<span>')
+            .addClass('descr')
+            .attr('title', gist.description)
+            .text(gist.description);
+        itemInfo.append(itemDescr);
+
+        var itemArrow = $('<span>')
+            .addClass('arrow')
+        item.append(itemArrow);
+
+        return item;
+    }
+
+    function updateFilter() {
+        var gistItems = $(SELECTOR.overviewGists + ' li');
+
+        var filterType = $(SELECTOR.overviewFilter + ' .current a').attr('rel');
+        if (filterType.length > 0) {
+            gistItems.hide();
+            gistItems.filter(filterType).show();
+        }
+        else {
+            gistItems.show();
+        }
+
+        var filterText = $(SELECTOR.overviewSearch).val().toLowerCase();
+        gistItems.each(function() {
+            var contained = false;
+            var elements = $(this).find('.info > *');
+            for (var index = 0; index < elements.length; index++) {
+                var element = $(elements[index]);
+                if (element.text().toLowerCase().indexOf(filterText) >= 0)
+                    return
+            }
+
+            $(this).hide();
+        });
+    }
+
+    function openUrl(url) {
+        chrome.tabs.create({ url: url });
+        window.close();
+    }
+})();
