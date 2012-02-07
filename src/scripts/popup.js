@@ -239,6 +239,9 @@
         var fileFields = $(SELECTOR.editFiles + ' .file');
         for (var index = 0, len = fileFields.length; index < len; index++) {
             var field = $(fileFields[index]);
+            if (field.hasClass('removed'))
+                continue;
+
             var filename = field.find('.filename').val();
             var content = field.find('.content').val();
             if (content.length == 0) {
