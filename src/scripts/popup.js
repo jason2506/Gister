@@ -19,7 +19,9 @@
         editPage: '#edit-page',
         editForm: '#edit-form',
         editFiles: '#edit-files',
-        editAddFile: '#edit-add-file'
+        editAddFile: '#edit-add-file',
+        editCreatePrivate: '#edit-create-private',
+        editCreatePublic: '#edit-create-public'
     }
 
     var pages = $(SELECTOR.pages);
@@ -77,6 +79,23 @@
     $(SELECTOR.editFiles + ' .file').click(function() {
         var index = $(this).attr('rel');
         selectFile(index);
+    });
+
+    $(SELECTOR.editCreatePrivate).click(function() {
+        $.data($(SELECTOR.editForm)[0], 'public', false);
+    });
+
+    $(SELECTOR.editCreatePublic).click(function() {
+        $.data($(SELECTOR.editForm)[0], 'public', true);
+    });
+
+    $(SELECTOR.editForm).submit(function() {
+        var isPublic = $.data(this, 'public');
+        var info = getFiles();
+        gister.create(info.description, isPublic, info.files, function(gist) {
+        });
+
+        return false;
     });
 
     function displayGists(gists) {
@@ -194,6 +213,18 @@
         var files = $(SELECTOR.editFiles + ' .file');
         files.removeClass('current');
         $(files[index]).addClass('current');
+    }
+
+    function getFiles() {
+        var description = $(SELECTOR.editFiles + ' .description').val();
+        var files = {};
+        $(SELECTOR.editFiles + ' .file').each(function() {
+            var filename = $(this).find('.filename').val();
+            var content = $(this).find('.content').val();
+            files[filename] = { content: content };
+        });
+
+        return { description: description, files: files };
     }
 
     function openUrl(url) {
