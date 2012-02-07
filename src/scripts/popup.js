@@ -1,6 +1,7 @@
 (function() {
     var gister = new Gister();
     const SELECTOR = {
+        container: 'body',
         pages: '.page',
 
         loginForm: '#login-form',
@@ -13,7 +14,12 @@
         overviewLoading: '#overview-loading',
         overviewGists: '#overview-gists',
         overviewSearch: '#overview-search',
-        overviewFilter: '#overview-filters'
+        overviewFilter: '#overview-filters',
+
+        editPage: '#edit-page',
+        editForm: '#edit-form',
+        editFiles: '#edit-files',
+        editAddFile: '#edit-add-file'
     }
 
     var pages = $(SELECTOR.pages);
@@ -40,7 +46,9 @@
     });
 
     $(SELECTOR.overviewNewGist).click(function() {
-        openUrl('https://gist.github.com');
+        $(SELECTOR.container).addClass('large');
+        $(SELECTOR.overviewPage).hide();
+        $(SELECTOR.editPage).show();
     });
 
     $(SELECTOR.overviewSearch).on('input', updateFilter);
@@ -50,6 +58,12 @@
         $(this).parent().addClass('current');
 
         updateFilter();
+    });
+
+    $(SELECTOR.editPage + ' h1').click(function() {
+        $(SELECTOR.container).removeClass('large');
+        $(SELECTOR.editPage).hide();
+        $(SELECTOR.overviewPage).show();
     });
 
     function displayGists(gists) {
