@@ -66,6 +66,19 @@
         $(SELECTOR.overviewPage).show();
     });
 
+    $(SELECTOR.editAddFile).click(function() {
+        var file = addFile();
+        $(SELECTOR.editFiles).append(file);
+        selectFile(file.attr('rel'));
+
+        return false;
+    });
+
+    $(SELECTOR.editFiles + ' .file').click(function() {
+        var index = $(this).attr('rel');
+        selectFile(index);
+    });
+
     function displayGists(gists) {
         var list = $(SELECTOR.overviewGists);
         for (var index = 0; index < gists.length; index++) {
@@ -135,6 +148,30 @@
 
             $(this).hide();
         });
+    }
+
+    function addFile() {
+        var lastFile = $(SELECTOR.editFiles + ' .file').last();
+        var lastIndex = lastFile.attr('rel');
+
+        var clone = lastFile.clone();
+        clone.find('.filename').val('');
+        clone.find('.content').val('');
+        clone.attr('rel', parseInt(lastIndex) + 1);
+        clone.addClass('append');
+
+        clone.click(function() {
+            var index = $(this).attr('rel');
+            selectFile(index);
+        });
+
+        return clone;
+    }
+
+    function selectFile(index) {
+        var files = $(SELECTOR.editFiles + ' .file');
+        files.removeClass('current');
+        $(files[index]).addClass('current');
     }
 
     function openUrl(url) {

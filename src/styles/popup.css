@@ -248,12 +248,19 @@ a:hover {
 #edit-files {
   background: #F9F9F9;
   border: 1px solid #D9D9D9;
+  max-height: 450px;
+  overflow-y: scroll;
+}
+
+#edit-files .append {
+  border-top: 1px solid #D9D9D9;
 }
 
 #edit-files label {
   background: #F5F5F5;
   border-bottom: 1px solid #D9D9D9;
   display: block;
+  text-align: left;
   padding: 7px 10px;
 }
 
@@ -270,7 +277,7 @@ a:hover {
   font-size: 13px;
   margin: 0;
   padding: 2px;
-  width: 294px;
+  width: 288px;
 }
 
 #edit-files textarea {
@@ -278,15 +285,22 @@ a:hover {
   font-size: 13px;
   height: 300px;
   margin: 10px;
-  width: 372px;
+  width: 366px;
 }
 
 #edit-files .remove {
   color: #D00;
-  display: inline-block;
   font-size: 80%;
   margin: 0 10px 5px;
   text-decoration: underline;
+}
+
+#edit-files .content, #edit-files .remove {
+  display: none;
+}
+
+#edit-files .current .content, #edit-files .current .remove {
+  display: inline-block;
 }
 
 #edit-add-file {
