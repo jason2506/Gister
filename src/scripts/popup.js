@@ -252,6 +252,14 @@
                 return null;
             }
 
+            if (filename in files) {
+                $(SELECTOR.editError).text('Contents can\'t have duplicate filenames').show();
+                selectFile(field.attr('rel'));
+                field.find('.filename').focus();
+
+                return null;
+            }
+
             files[filename] = { content: content };
         }
 
