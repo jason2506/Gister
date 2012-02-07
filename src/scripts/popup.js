@@ -158,7 +158,29 @@
         clone.find('.filename').val('');
         clone.find('.content').val('');
         clone.attr('rel', parseInt(lastIndex) + 1);
-        clone.addClass('append');
+        clone.removeClass('removed');
+        if (!clone.hasClass('append')) {
+            clone.addClass('append');
+            var remove = $('<a>')
+                .addClass('remove')
+                .attr('href', '#')
+                .text('remove');
+            clone.append(remove);
+        }
+
+        clone.find('.remove').click(function() {
+            var target = $(this).parent();
+            var selected = target;
+            do {
+                selected = selected.prev();
+            } while (selected.hasClass('removed'));
+
+            selectFile(selected.attr('rel'));
+            target.addClass('removed');
+            target.off('click');
+
+            return false;
+        });
 
         clone.click(function() {
             var index = $(this).attr('rel');
