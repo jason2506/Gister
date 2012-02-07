@@ -98,6 +98,9 @@
         if (info) {
             gister.create(info.description, isPublic, info.files, function(gist) {
                 $(SELECTOR.editPage + ' h1').click();
+
+                var item = generateGistItem(gist);
+                $(SELECTOR.overviewGists).prepend(item);
             });
         }
 
