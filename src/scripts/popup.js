@@ -17,6 +17,7 @@
         overviewFilter: '#overview-filters',
 
         editPage: '#edit-page',
+        editError: '#edit-error',
         editForm: '#edit-form',
         editFiles: '#edit-files',
         editAddFile: '#edit-add-file',
@@ -62,6 +63,8 @@
         updateFilter();
     });
 
+    $(SELECTOR.editError).hide();
+
     $(SELECTOR.editPage + ' h1').click(function() {
         $(SELECTOR.container).removeClass('large');
         $(SELECTOR.editPage).hide();
@@ -92,8 +95,11 @@
     $(SELECTOR.editForm).submit(function() {
         var isPublic = $.data(this, 'public');
         var info = getFiles();
-        gister.create(info.description, isPublic, info.files, function(gist) {
-        });
+        if (info) {
+            gister.create(info.description, isPublic, info.files, function(gist) {
+                $(SELECTOR.editPage + ' h1').click();
+            });
+        }
 
         return false;
     });
@@ -162,7 +168,7 @@
             for (var index = 0; index < elements.length; index++) {
                 var element = $(elements[index]);
                 if (element.text().toLowerCase().indexOf(filterText) >= 0)
-                    return
+                    return;
             }
 
             $(this).hide();
@@ -218,11 +224,22 @@
     function getFiles() {
         var description = $(SELECTOR.editFiles + ' .description').val();
         var files = {};
-        $(SELECTOR.editFiles + ' .file').each(function() {
-            var filename = $(this).find('.filename').val();
-            var content = $(this).find('.content').val();
+
+        var fileFields = $(SELECTOR.editFiles + ' .file');
+        for (var index = 0, len = fileFields.length; index < len; index++) {
+            var field = $(fileFields[index]);
+            var filename = field.find('.filename').val();
+            var content = field.find('.content').val();
+            if (content.length == 0) {
+                $(SELECTOR.editError).text('Content should not be empty').show();
+                selectFile(field.attr('rel'));
+                field.find('.content').focus();
+
+                return null;
+            }
+
             files[filename] = { content: content };
-        });
+        }
 
         return { description: description, files: files };
     }

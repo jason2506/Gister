@@ -241,6 +241,16 @@ a:hover {
   background: url('../icons/arrow-hover.png') 1px 1px no-repeat;
 }
 
+#edit-error {
+  background: #FFEAEA;
+  color: #900;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 0 0 8px;
+  padding: 8px;
+  text-align: center;
+}
+
 #edit-form {
   text-align: right;
 }
