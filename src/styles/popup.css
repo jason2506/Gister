@@ -24,6 +24,10 @@ body {
   width: 300px;
 }
 
+body.large {
+  width: 400px;
+}
+
 button, input[type="button"], input[type="submit"] {
   border: none;
   border-radius: 3px;
@@ -235,5 +239,144 @@ a:hover {
 
 #overview-gists .arrow:hover {
   background: url('../icons/arrow-hover.png') 1px 1px no-repeat;
+}
+
+#edit-error {
+  background: #FFEAEA;
+  color: #900;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 0 0 8px;
+  padding: 8px;
+  text-align: center;
+}
+
+#edit-form {
+  text-align: right;
+}
+
+#edit-files {
+  background: #F9F9F9;
+  border: 1px solid #D9D9D9;
+  max-height: 450px;
+  overflow-y: scroll;
+}
+
+#edit-files .append {
+  border-top: 1px solid #D9D9D9;
+}
+
+#edit-files label {
+  background: #F5F5F5;
+  border-bottom: 1px solid #D9D9D9;
+  display: block;
+  text-align: left;
+  padding: 7px 10px;
+}
+
+#edit-files label span {
+  color: #666;
+  display: inline-block;
+  font-size: 12px;
+  padding: 0 2px;
+  width: 70px;
+}
+
+#edit-files input[type="text"] {
+  color: #666;
+  font-size: 13px;
+  margin: 0;
+  padding: 2px;
+  width: 288px;
+}
+
+#edit-files textarea {
+  border: 1px solid #DDD;
+  font-size: 13px;
+  height: 300px;
+  margin: 10px;
+  width: 366px;
+}
+
+#edit-files .remove {
+  color: #D00;
+  font-size: 80%;
+  margin: 0 10px 5px;
+  text-decoration: underline;
+}
+
+#edit-files .content, #edit-files .remove {
+  display: none;
+}
+
+#edit-files .current .content, #edit-files .current .remove {
+  display: inline-block;
+}
+
+#edit-files .removed label:after {
+  color: #D00;
+  content: '(file removed)';
+  display: inline-block;
+  font-size: 13px;
+  padding: 2px;
+}
+
+#edit-files .removed .filename {
+  display: none;
+}
+
+#edit-add-file {
+  background: #F5F5F5 url('../icons/new_file.png') 10px 6px no-repeat;
+  border: 1px solid #D9D9D9;
+  color: #4183C4;
+  cursor: pointer;
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 10px 0;
+  padding: 8px 10px 8px 34px;
+  text-align: left;
+}
+
+#edit-add-file:hover {
+  background-color: #4183c4;
+  border-color: #175790;
+  color: #fff;
+  text-decoration: none;
+}
+
+#edit-create-private, #edit-create-public {
+  border-bottom: 1px solid #EBEBEB;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  font-weight: bold;
+  height: 32px;
+  margin-left: 10px;
+  padding: 2px 12px 0 34px;
+}
+
+#edit-create-private:hover, #edit-create-public:hover {
+  border-bottom-color:#0770A0;
+  color: #FFF;
+  text-shadow:-1px -1px 0 rgba(0,0,0,0.3);
+}
+
+#edit-create-private {
+  background: url('../icons/private.png') 12px 8px no-repeat,
+    -webkit-linear-gradient(#FFFAD5, #E6E1C0);
+}
+
+#edit-create-private:hover {
+  background: url('../icons/private.png') 12px 8px no-repeat,
+    -webkit-linear-gradient(#0CA6DD, #0770A0);
+}
+
+#edit-create-public {
+  background: url('../icons/public.png') 12px 8px no-repeat,
+    -webkit-linear-gradient(#FFF, #E1E1E1);
+}
+
+#edit-create-public:hover {
+  background: url('../icons/public.png') 12px 8px no-repeat,
+    -webkit-linear-gradient(#0CA6DD, #0770A0);
 }
 
