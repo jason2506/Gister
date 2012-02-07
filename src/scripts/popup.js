@@ -51,6 +51,8 @@
     $(SELECTOR.overviewNewGist).click(function() {
         $(SELECTOR.container).addClass('large');
         $(SELECTOR.overviewPage).hide();
+
+        clearFiles();
         $(SELECTOR.editPage).show();
     });
 
@@ -62,8 +64,6 @@
 
         updateFilter();
     });
-
-    $(SELECTOR.editError).hide();
 
     $(SELECTOR.editPage + ' h1').click(function() {
         $(SELECTOR.container).removeClass('large');
@@ -173,6 +173,17 @@
 
             $(this).hide();
         });
+    }
+
+    function clearFiles() {
+        $(SELECTOR.editError).hide();
+        $(SELECTOR.editFiles + ' .append').remove();
+
+        var file = $(SELECTOR.editFiles);
+        file.find('.filename').val('');
+        file.find('.content').val('');
+
+        selectFile(0);
     }
 
     function addFile() {
