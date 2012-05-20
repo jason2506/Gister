@@ -23,7 +23,7 @@
         editAddFile: '#edit-add-file',
         editCreatePrivate: '#edit-create-private',
         editCreatePublic: '#edit-create-public'
-    }
+    };
 
     var pages = $(SELECTOR.pages);
     pages.hide();
@@ -146,7 +146,7 @@
         itemInfo.append(itemDescr);
 
         var itemArrow = $('<span>')
-            .addClass('arrow')
+            .addClass('arrow');
         item.append(itemArrow);
 
         return item;

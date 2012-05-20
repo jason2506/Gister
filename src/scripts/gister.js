@@ -1,7 +1,7 @@
 var Gister = (function() {
     var bgPage = chrome.extension.getBackgroundPage();
 
-    var Gister = function() { /* empty */ }
+    var Gister = function() { /* empty */ };
     Gister.prototype = {
         save: function(user, pwd) {
             bgPage.save(user, pwd);
@@ -56,7 +56,7 @@ var Gister = (function() {
                 success: opts.callback
             });
         }
-    }
+    };
 
     return Gister;
 })();
