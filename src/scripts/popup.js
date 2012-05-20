@@ -196,7 +196,7 @@
         var clone = lastFile.clone();
         clone.find('.filename').val('');
         clone.find('.content').val('');
-        clone.attr('rel', parseInt(lastIndex) + 1);
+        clone.attr('rel', parseInt(lastIndex, 10) + 1);
         clone.removeClass('removed');
         if (!clone.hasClass('append')) {
             clone.addClass('append');
