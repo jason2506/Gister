@@ -247,7 +247,7 @@
 
             var filename = field.find('.filename').val();
             var content = field.find('.content').val();
-            if (content.length == 0) {
+            if (content.length === 0) {
                 $(SELECTOR.editError).text('Content should not be empty').show();
                 selectFile(field.attr('rel'));
                 field.find('.content').focus();

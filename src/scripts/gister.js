@@ -8,7 +8,7 @@ var Gister = (function() {
         },
         accessible: function() {
             var jqxhr = this.request({ async: false });
-            return jqxhr && jqxhr.status == '204';
+            return jqxhr && jqxhr.status === 204;
         },
         create: function(descr, public, files, callback) {
             this.request({
@@ -51,7 +51,7 @@ var Gister = (function() {
                 url: 'https://api.github.com' + (opts.uri || ''),
                 headers: { Authorization: 'Basic ' + auth },
                 dataType: 'json',
-                async: (opts.async != undefined) ? opts.async : true,
+                async: (opts.async !== undefined) ? opts.async : true,
                 data: opts.data,
                 success: opts.callback
             });
