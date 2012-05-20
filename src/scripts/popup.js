@@ -15,6 +15,7 @@
         overviewGists: '#overview-gists',
         overviewSearch: '#overview-search',
         overviewFilter: '#overview-filters',
+        overviewTmpl: '#overview-tmpl',
 
         editPage: '#edit-page',
         editError: '#edit-error',
@@ -108,48 +109,21 @@
     });
 
     function displayGists(gists) {
+        var template = _.template($(SELECTOR.overviewTmpl).html());
+
         var list = $(SELECTOR.overviewGists);
-        for (var index = 0; index < gists.length; index++) {
-            var item = generateGistItem(gists[index]);
-            list.append(item);
-        }
+        for (var index = 0; index < gists.length; index++)
+            list.append(template(gists[index]));
+
+        $(SELECTOR.overviewGists + ' li').click(function() {
+            var url = $(this).attr('rel');
+            openUrl(url);
+        });
 
         gister.getStarred(function(gists) {
             for (var index = 0; index < gists.length; index++)
                 $('#gist-' + gists[index].id).addClass('starred');
         });
-    }
-
-    function generateGistItem(gist) {
-        var item = $('<li>')
-            .addClass(gist.public ? 'public' : 'private')
-            .attr('id', 'gist-' + gist.id)
-            .attr('rel', gist.html_url)
-            .click(function() {
-                var url = $(this).attr('rel');
-                openUrl(url);
-            });
-
-        var itemInfo = $('<span>')
-            .addClass('info');
-        item.append(itemInfo);
-
-        var itemLink = $('<span>')
-            .addClass('id')
-            .text('gist:' + gist.id);
-        itemInfo.append(itemLink);
-
-        var itemDescr = $('<span>')
-            .addClass('descr')
-            .attr('title', gist.description)
-            .text(gist.description);
-        itemInfo.append(itemDescr);
-
-        var itemArrow = $('<span>')
-            .addClass('arrow');
-        item.append(itemArrow);
-
-        return item;
     }
 
     function updateFilter() {

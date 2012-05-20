@@ -39,6 +39,15 @@
         </div>
         <ul id="overview-gists"></ul>
         <div id="overview-loading">Loading...</div>
+        <script id="overview-tmpl" type="text/template">
+          <li class="<%= public ? 'public' : 'private' %>" id="gist-<%= id %>" rel="<%= html_url %>">
+            <span class="info">
+              <span class="id">gist:<%= id %></span>
+              <span class="descr" title="<%= description %>"><%= description %></span>
+            </span>
+            <span class="arrow"></span>
+          </li>
+        </script>
       </div>
     </div>
     <div id="edit-page" class="page">
@@ -66,6 +75,7 @@
       </form>
     </div>
     <script src="scripts/jquery.js"></script>
+    <script src="scripts/underscore.js"></script>
     <script src="scripts/gister.js"></script>
     <script src="scripts/popup.js"></script>
   </body>
