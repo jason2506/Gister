@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="styles/popup.css" />
+    <title>Overview</title>
+  </head>
+  <body class="page">
+    <div class="head">
+      <h1>Github:Gist</h1>
+      <button type="button" id="overview-new-gist">New gist</button>
+    </div>
+    <div id="overview-gists-container">
+      <div id="overview-filters-container">
+        <input type="search" id="overview-search" placeholder="Find a gist..." />
+        <ul id="overview-filters">
+          <li class="current"><a href="#" rel="">All Gists</a></li>
+          <li><a href="#" rel=".public">Public</a></li>
+          <li><a href="#" rel=".private">Private</a></li>
+          <li><a href="#" rel=".starred">Starred</a></li>
+        </ul>
+      </div>
+      <ul id="overview-gists"></ul>
+      <div id="overview-loading">Loading...</div>
+      <script id="overview-tmpl" type="text/template">
+        <li class="<%= public ? 'public' : 'private' %>" id="gist-<%= id %>" rel="<%= html_url %>">
+          <span class="info">
+            <span class="id">gist:<%= id %></span>
+            <span class="descr" title="<%= description %>"><%= description %></span>
+          </span>
+          <span class="arrow"></span>
+        </li>
+      </script>
+    </div>
+    <script src="scripts/jquery.js"></script>
+    <script src="scripts/underscore.js"></script>
+    <script src="scripts/gister.js"></script>
+    <script src="scripts/overview.js"></script>
+  </body>
+</html>

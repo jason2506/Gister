@@ -1,23 +1,6 @@
 (function() {
     var gister = new Gister();
     const SELECTOR = {
-        container: 'body',
-        pages: '.page',
-
-        loginForm: '#login-form',
-        loginPage: '#login-page',
-        loginUser: '#login-user',
-        loginPwd: '#login-pwd',
-
-        overviewPage: '#overview-page',
-        overviewNewGist: '#overview-new-gist',
-        overviewLoading: '#overview-loading',
-        overviewGists: '#overview-gists',
-        overviewSearch: '#overview-search',
-        overviewFilter: '#overview-filters',
-        overviewTmpl: '#overview-tmpl',
-
-        editPage: '#edit-page',
         editError: '#edit-error',
         editForm: '#edit-form',
         editFiles: '#edit-files',
@@ -26,50 +9,8 @@
         editCreatePublic: '#edit-create-public'
     };
 
-    var pages = $(SELECTOR.pages);
-    pages.hide();
-    if (gister.accessible()) {
-        $(SELECTOR.overviewPage).show();
-        gister.getAll(function(gists) {
-            $(SELECTOR.overviewLoading).remove();
-            displayGists(gists);
-        });
-    }
-    else {
-        $(SELECTOR.loginPage).show();
-    }
-
-    $(SELECTOR.loginForm).submit(function() {
-        var user = $(SELECTOR.loginUser).val();
-        var pwd = $(SELECTOR.loginPwd).val();
-        gister.save(user, pwd);
-    });
-
-    $(SELECTOR.overviewPage + ' h1').click(function() {
-        openUrl('https://gist.github.com/mine');
-    });
-
-    $(SELECTOR.overviewNewGist).click(function() {
-        $(SELECTOR.container).addClass('large');
-        $(SELECTOR.overviewPage).hide();
-
-        clearFiles();
-        $(SELECTOR.editPage).show();
-    });
-
-    $(SELECTOR.overviewSearch).on('input', updateFilter);
-
-    $(SELECTOR.overviewFilter + ' a').click(function() {
-        $(SELECTOR.overviewFilter + ' .current').removeClass('current');
-        $(this).parent().addClass('current');
-
-        updateFilter();
-    });
-
-    $(SELECTOR.editPage + ' h1').click(function() {
-        $(SELECTOR.container).removeClass('large');
-        $(SELECTOR.editPage).hide();
-        $(SELECTOR.overviewPage).show();
+    $('h1').click(function() {
+        window.location.href = 'overview.html';
     });
 
     $(SELECTOR.editAddFile).click(function() {
@@ -96,61 +37,15 @@
     $(SELECTOR.editForm).submit(function() {
         var isPublic = $.data(this, 'public');
         var info = getFiles();
-        if (info) {
+        if (info)
             gister.create(info.description, isPublic, info.files, function(gist) {
-                $(SELECTOR.editPage + ' h1').click();
-
-                var item = generateGistItem(gist);
-                $(SELECTOR.overviewGists).prepend(item);
+                window.location.href = 'overview.html';
             });
-        }
 
         return false;
     });
 
-    function displayGists(gists) {
-        var template = _.template($(SELECTOR.overviewTmpl).html());
-
-        var list = $(SELECTOR.overviewGists);
-        for (var index = 0; index < gists.length; index++)
-            list.append(template(gists[index]));
-
-        $(SELECTOR.overviewGists + ' li').click(function() {
-            var url = $(this).attr('rel');
-            openUrl(url);
-        });
-
-        gister.getStarred(function(gists) {
-            for (var index = 0; index < gists.length; index++)
-                $('#gist-' + gists[index].id).addClass('starred');
-        });
-    }
-
-    function updateFilter() {
-        var gistItems = $(SELECTOR.overviewGists + ' li');
-
-        var filterType = $(SELECTOR.overviewFilter + ' .current a').attr('rel');
-        if (filterType.length > 0) {
-            gistItems.hide();
-            gistItems.filter(filterType).show();
-        }
-        else {
-            gistItems.show();
-        }
-
-        var filterText = $(SELECTOR.overviewSearch).val().toLowerCase();
-        gistItems.each(function() {
-            var contained = false;
-            var elements = $(this).find('.info > *');
-            for (var index = 0; index < elements.length; index++) {
-                var element = $(elements[index]);
-                if (element.text().toLowerCase().indexOf(filterText) >= 0)
-                    return;
-            }
-
-            $(this).hide();
-        });
-    }
+    clearFiles();
 
     function clearFiles() {
         $(SELECTOR.editError).hide();
@@ -241,10 +136,5 @@
         }
 
         return { description: description, files: files };
-    }
-
-    function openUrl(url) {
-        chrome.tabs.create({ url: url });
-        window.close();
     }
 })();
