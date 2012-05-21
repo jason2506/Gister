@@ -23,13 +23,11 @@
       <ul id="gists"></ul>
       <div id="loading">Loading...</div>
       <script id="tmpl" type="text/template">
-        <li class="<%= public ? 'public' : 'private' %>" id="gist-<%= id %>" rel="<%= html_url %>">
-          <span class="info">
-            <span class="id">gist:<%= id %></span>
-            <span class="descr" title="<%= description %>"><%= description %></span>
-          </span>
-          <span class="arrow"></span>
-        </li>
+        <span class="info">
+          <span class="id">gist:<%= id %></span>
+          <span class="descr" title="<%= description %>"><%= description %></span>
+        </span>
+        <span class="arrow"></span>
       </script>
     </div>
     <script src="scripts/jquery.js"></script>

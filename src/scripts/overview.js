@@ -9,9 +9,10 @@
     });
 
     var GistView = Backbone.View.extend({
+        tagName: 'li',
         template: _.template($('#tmpl').html()),
         events: {
-            'click li': 'link'
+            'click': 'link'
         },
         render: function() {
             this.$el.html(this.template(this.model.toJSON()));
@@ -28,7 +29,12 @@
         },
         render: function() {
             this.collection.forEach(function(gist) {
-                var gistView = new GistView({ model: gist });
+                var gistView = new GistView({
+                    model: gist,
+                    id: 'gist-' + gist.id,
+                    className: gist.get('public') ? 'public' : 'private',
+                    attributes: { rel: gist.get('html_url') }
+                });
                 this.$el.append(gistView.render().$el);
             }, this);
             return this;
