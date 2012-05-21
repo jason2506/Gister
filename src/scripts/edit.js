@@ -38,36 +38,22 @@
         return false;
     });
 
+    var count = 0;
     clearFiles();
 
     function clearFiles() {
         $('#error').hide();
-        $('#files .append').remove();
 
-        var file = $('#files');
-        file.find('.filename').val('');
-        file.find('.content').val('');
+        var file = addFile();
+        $('#files').append(file);
 
         selectFile(0);
     }
 
     function addFile() {
-        var lastFile = $('#files .file').last();
-        var lastIndex = lastFile.attr('rel');
-
-        var clone = lastFile.clone();
-        clone.find('.filename').val('');
-        clone.find('.content').val('');
-        clone.attr('rel', parseInt(lastIndex, 10) + 1);
-        clone.removeClass('removed');
-        if (!clone.hasClass('append')) {
-            clone.addClass('append');
-            var remove = $('<a>')
-                .addClass('remove')
-                .attr('href', '#')
-                .text('remove');
-            clone.append(remove);
-        }
+        var template = _.template($('#tmpl').html());
+        clone = $(template({ index: count++ }));
+        console.log(clone);
 
         clone.find('.remove').click(function() {
             var target = $(this).parent();

@@ -16,19 +16,23 @@
           <span>Description:</span>
           <input type="text" class="description" placeholder="Gist description..." />
         </label>
-        <div class="file" rel="0">
-          <label>
-            <span>File Name:</span>
-            <input type="text" class="filename" placeholder="name this file..." required />
-          </label>
-          <textarea class="content"></textarea>
-        </div>
+        <script id="tmpl" type="text/template">
+          <div class="file<% if (index !== 0) { %> append<% } %>" rel="<%= index %>">
+            <label>
+              <span>File Name:</span>
+              <input type="text" class="filename" placeholder="name this file..." required />
+            </label>
+            <textarea class="content"></textarea>
+            <% if (index !== 0) { %><a href="#" class="remove">remove</a><% } %>
+          </div>
+        </script>
       </div>
       <a href="#" id="add-file">Add another file...</a>
       <input type="submit" id="create-private" value="Create Private Gist" />
       <input type="submit" id="create-public" value="Create Public Gist" />
     </form>
     <script src="scripts/jquery.js"></script>
+    <script src="scripts/underscore.js"></script>
     <script src="scripts/gister.js"></script>
     <script src="scripts/edit.js"></script>
   </body>
