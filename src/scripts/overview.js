@@ -3,11 +3,11 @@
     const SELECTOR = {
         container: 'body',
 
-        overviewNewGist: '#overview-new-gist',
-        overviewLoading: '#overview-loading',
-        overviewGists: '#overview-gists',
-        overviewSearch: '#overview-search',
-        overviewFilter: '#overview-filters'
+        overviewNewGist: '#new-gist',
+        overviewLoading: '#loading',
+        overviewGists: '#gists',
+        overviewSearch: '#search',
+        overviewFilter: '#filters'
     };
 
     gister.getAll(function(gists) {
@@ -33,7 +33,7 @@
     });
 
     function displayGists(gists) {
-        var template = _.template($('#overview-tmpl').html());
+        var template = _.template($('#tmpl').html());
 
         var list = $(SELECTOR.overviewGists);
         for (var index = 0; index < gists.length; index++)

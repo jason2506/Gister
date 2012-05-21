@@ -5,13 +5,13 @@
     <link rel="stylesheet" href="styles/popup.css" />
     <title>Edit</title>
   </head>
-  <body class="large page">
+  <body id="edit" class="large page">
     <div class="head">
       <h1>« Back</h1>
     </div>
-    <div id="edit-error"></div>
-    <form id="edit-form">
-      <div id="edit-files">
+    <div id="error"></div>
+    <form id="form">
+      <div id="files">
         <label>
           <span>Description:</span>
           <input type="text" class="description" placeholder="Gist description..." />
@@ -24,9 +24,9 @@
           <textarea class="content"></textarea>
         </div>
       </div>
-      <a href="#" id="edit-add-file">Add another file...</a>
-      <input type="submit" id="edit-create-private" value="Create Private Gist" />
-      <input type="submit" id="edit-create-public" value="Create Public Gist" />
+      <a href="#" id="add-file">Add another file...</a>
+      <input type="submit" id="create-private" value="Create Private Gist" />
+      <input type="submit" id="create-public" value="Create Public Gist" />
     </form>
     <script src="scripts/jquery.js"></script>
     <script src="scripts/gister.js"></script>

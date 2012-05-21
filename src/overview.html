@@ -5,24 +5,24 @@
     <link rel="stylesheet" href="styles/popup.css" />
     <title>Overview</title>
   </head>
-  <body class="page">
+  <body id="overview" class="page">
     <div class="head">
       <h1>Github:Gist</h1>
-      <button type="button" id="overview-new-gist">New gist</button>
+      <button type="button" id="new-gist">New gist</button>
     </div>
-    <div id="overview-gists-container">
-      <div id="overview-filters-container">
-        <input type="search" id="overview-search" placeholder="Find a gist..." />
-        <ul id="overview-filters">
+    <div id="gists-container">
+      <div id="filters-container">
+        <input type="search" id="search" placeholder="Find a gist..." />
+        <ul id="filters">
           <li class="current"><a href="#" rel="">All Gists</a></li>
           <li><a href="#" rel=".public">Public</a></li>
           <li><a href="#" rel=".private">Private</a></li>
           <li><a href="#" rel=".starred">Starred</a></li>
         </ul>
       </div>
-      <ul id="overview-gists"></ul>
-      <div id="overview-loading">Loading...</div>
-      <script id="overview-tmpl" type="text/template">
+      <ul id="gists"></ul>
+      <div id="loading">Loading...</div>
+      <script id="tmpl" type="text/template">
         <li class="<%= public ? 'public' : 'private' %>" id="gist-<%= id %>" rel="<%= html_url %>">
           <span class="info">
             <span class="id">gist:<%= id %></span>

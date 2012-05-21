@@ -1,12 +1,12 @@
 (function() {
     var gister = new Gister();
     const SELECTOR = {
-        editError: '#edit-error',
-        editForm: '#edit-form',
-        editFiles: '#edit-files',
-        editAddFile: '#edit-add-file',
-        editCreatePrivate: '#edit-create-private',
-        editCreatePublic: '#edit-create-public'
+        editError: '#error',
+        editForm: '#form',
+        editFiles: '#files',
+        editAddFile: '#add-file',
+        editCreatePrivate: '#create-private',
+        editCreatePublic: '#create-public'
     };
 
     $('h1').click(function() {

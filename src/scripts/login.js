@@ -1,9 +1,9 @@
 (function() {
     var gister = new Gister();
     const SELECTOR = {
-        loginForm: '#login-form',
-        loginUser: '#login-user',
-        loginPwd: '#login-pwd'
+        loginForm: '#form',
+        loginUser: '#user',
+        loginPwd: '#pwd'
     };
 
     if (gister.accessible())
