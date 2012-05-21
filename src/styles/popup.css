@@ -21,11 +21,8 @@
 body {
   font: 14px helvetica, arial, freesans, clean, sans-serif;
   padding: 2px;
+  position: relative;
   width: 300px;
-}
-
-body.large {
-  width: 400px;
 }
 
 button, input[type="button"], input[type="submit"] {
@@ -50,10 +47,6 @@ a {
 
 a:hover {
   text-decoration: underline;
-}
-
-.page {
-  position: relative;
 }
 
 .head h1 {
@@ -239,6 +232,10 @@ a:hover {
 
 #overview #gists .arrow:hover {
   background: url('../icons/arrow-hover.png') 1px 1px no-repeat;
+}
+
+#edit {
+  width: 400px;
 }
 
 #edit #error {
