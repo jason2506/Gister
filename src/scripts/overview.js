@@ -1,17 +1,8 @@
 (function() {
     var gister = new Gister();
-    const SELECTOR = {
-        container: 'body',
-
-        overviewNewGist: '#new-gist',
-        overviewLoading: '#loading',
-        overviewGists: '#gists',
-        overviewSearch: '#search',
-        overviewFilter: '#filters'
-    };
 
     gister.getAll(function(gists) {
-        $(SELECTOR.overviewLoading).remove();
+        $('#loading').remove();
         displayGists(gists);
     });
 
@@ -19,14 +10,14 @@
         openUrl('https://gist.github.com/mine');
     });
 
-    $(SELECTOR.overviewNewGist).click(function() {
+    $('#new-gist').click(function() {
         window.location.href = 'edit.html';
     });
 
-    $(SELECTOR.overviewSearch).on('input', updateFilter);
+    $('#search').on('input', updateFilter);
 
-    $(SELECTOR.overviewFilter + ' a').click(function() {
-        $(SELECTOR.overviewFilter + ' .current').removeClass('current');
+    $('#filters a').click(function() {
+        $('#filters .current').removeClass('current');
         $(this).parent().addClass('current');
 
         updateFilter();
@@ -35,11 +26,11 @@
     function displayGists(gists) {
         var template = _.template($('#tmpl').html());
 
-        var list = $(SELECTOR.overviewGists);
+        var list = $('#gists');
         for (var index = 0; index < gists.length; index++)
             list.append(template(gists[index]));
 
-        $(SELECTOR.overviewGists + ' li').click(function() {
+        $('#gists li').click(function() {
             var url = $(this).attr('rel');
             openUrl(url);
         });
@@ -51,9 +42,9 @@
     }
 
     function updateFilter() {
-        var gistItems = $(SELECTOR.overviewGists + ' li');
+        var gistItems = $('#gists li');
 
-        var filterType = $(SELECTOR.overviewFilter + ' .current a').attr('rel');
+        var filterType = $('#filters .current a').attr('rel');
         if (filterType.length > 0) {
             gistItems.hide();
             gistItems.filter(filterType).show();
@@ -62,7 +53,7 @@
             gistItems.show();
         }
 
-        var filterText = $(SELECTOR.overviewSearch).val().toLowerCase();
+        var filterText = $('#search').val().toLowerCase();
         gistItems.each(function() {
             var contained = false;
             var elements = $(this).find('.info > *');

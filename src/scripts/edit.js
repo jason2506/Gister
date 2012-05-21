@@ -1,40 +1,32 @@
 (function() {
     var gister = new Gister();
-    const SELECTOR = {
-        editError: '#error',
-        editForm: '#form',
-        editFiles: '#files',
-        editAddFile: '#add-file',
-        editCreatePrivate: '#create-private',
-        editCreatePublic: '#create-public'
-    };
 
     $('h1').click(function() {
         window.location.href = 'overview.html';
     });
 
-    $(SELECTOR.editAddFile).click(function() {
+    $('#add-file').click(function() {
         var file = addFile();
-        $(SELECTOR.editFiles).append(file);
+        $('#files').append(file);
         selectFile(file.attr('rel'));
 
         return false;
     });
 
-    $(SELECTOR.editFiles + ' .file').click(function() {
+    $('#files .file').click(function() {
         var index = $(this).attr('rel');
         selectFile(index);
     });
 
-    $(SELECTOR.editCreatePrivate).click(function() {
-        $.data($(SELECTOR.editForm)[0], 'public', false);
+    $('#create-private').click(function() {
+        $.data($('#form')[0], 'public', false);
     });
 
-    $(SELECTOR.editCreatePublic).click(function() {
-        $.data($(SELECTOR.editForm)[0], 'public', true);
+    $('#create-public').click(function() {
+        $.data($('#form')[0], 'public', true);
     });
 
-    $(SELECTOR.editForm).submit(function() {
+    $('#form').submit(function() {
         var isPublic = $.data(this, 'public');
         var info = getFiles();
         if (info)
@@ -48,10 +40,10 @@
     clearFiles();
 
     function clearFiles() {
-        $(SELECTOR.editError).hide();
-        $(SELECTOR.editFiles + ' .append').remove();
+        $('#error').hide();
+        $('#files .append').remove();
 
-        var file = $(SELECTOR.editFiles);
+        var file = $('#files');
         file.find('.filename').val('');
         file.find('.content').val('');
 
@@ -59,7 +51,7 @@
     }
 
     function addFile() {
-        var lastFile = $(SELECTOR.editFiles + ' .file').last();
+        var lastFile = $('#files .file').last();
         var lastIndex = lastFile.attr('rel');
 
         var clone = lastFile.clone();
@@ -99,16 +91,16 @@
     }
 
     function selectFile(index) {
-        var files = $(SELECTOR.editFiles + ' .file');
+        var files = $('#files .file');
         files.removeClass('current');
         $(files[index]).addClass('current');
     }
 
     function getFiles() {
-        var description = $(SELECTOR.editFiles + ' .description').val();
+        var description = $('#files .description').val();
         var files = {};
 
-        var fileFields = $(SELECTOR.editFiles + ' .file');
+        var fileFields = $('#files .file');
         for (var index = 0, len = fileFields.length; index < len; index++) {
             var field = $(fileFields[index]);
             if (field.hasClass('removed'))
@@ -117,7 +109,7 @@
             var filename = field.find('.filename').val();
             var content = field.find('.content').val();
             if (content.length === 0) {
-                $(SELECTOR.editError).text('Content should not be empty').show();
+                $('#error').text('Content should not be empty').show();
                 selectFile(field.attr('rel'));
                 field.find('.content').focus();
 
@@ -125,7 +117,7 @@
             }
 
             if (filename in files) {
-                $(SELECTOR.editError).text('Contents can\'t have duplicate filenames').show();
+                $('#error').text('Contents can\'t have duplicate filenames').show();
                 selectFile(field.attr('rel'));
                 field.find('.filename').focus();
 
