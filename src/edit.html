@@ -17,14 +17,12 @@
           <input type="text" class="description" placeholder="Gist description..." />
         </label>
         <script id="tmpl" type="text/template">
-          <div class="file<% if (index !== 0) { %> append<% } %>" rel="<%= index %>">
-            <label>
-              <span>File Name:</span>
-              <input type="text" class="filename" placeholder="name this file..." required />
-            </label>
-            <textarea class="content"></textarea>
-            <% if (index !== 0) { %><a href="#" class="remove">remove</a><% } %>
-          </div>
+          <label>
+            <span>File Name:</span>
+            <input type="text" class="filename" placeholder="name this file..." required />
+          </label>
+          <textarea class="content"></textarea>
+          <% if (index !== 0) { %><a href="#" class="remove">remove</a><% } %>
         </script>
       </div>
       <a href="#" id="add-file">Add another file...</a>
@@ -33,6 +31,7 @@
     </form>
     <script src="scripts/jquery.js"></script>
     <script src="scripts/underscore.js"></script>
+    <script src="scripts/backbone.js"></script>
     <script src="scripts/gister.js"></script>
     <script src="scripts/edit.js"></script>
   </body>

@@ -2,61 +2,24 @@
     var bgPage = chrome.extension.getBackgroundPage();
     var gister = bgPage.gister;
 
-    $('h1').click(function() {
-        window.location.href = 'overview.html';
+    var GistFile = Backbone.Model.extend({ /* empty */ });
+
+    var GistFileList = Backbone.Collection.extend({
+        model: GistFile
     });
 
-    $('#add-file').click(function() {
-        var file = addFile();
-        $('#files').append(file);
-        selectFile(file.attr('rel'));
-
-        return false;
-    });
-
-    $('#files .file').click(function() {
-        var index = $(this).attr('rel');
-        selectFile(index);
-    });
-
-    $('#create-private').click(function() {
-        $.data($('#form')[0], 'public', false);
-    });
-
-    $('#create-public').click(function() {
-        $.data($('#form')[0], 'public', true);
-    });
-
-    $('#form').submit(function() {
-        var isPublic = $.data(this, 'public');
-        var info = getFiles();
-        if (info)
-            gister.create(info.description, isPublic, info.files, function(gist) {
-                window.location.href = 'overview.html';
-            });
-
-        return false;
-    });
-
-    var count = 0;
-    clearFiles();
-
-    function clearFiles() {
-        $('#error').hide();
-
-        var file = addFile();
-        $('#files').append(file);
-
-        selectFile(0);
-    }
-
-    function addFile() {
-        var template = _.template($('#tmpl').html());
-        clone = $(template({ index: count++ }));
-        console.log(clone);
-
-        clone.find('.remove').click(function() {
-            var target = $(this).parent();
+    var GistFileView = Backbone.View.extend({
+        tagName: 'div',
+        template: _.template($('#tmpl').html()),
+        events: {
+            'click .remove': 'remove'
+        },
+        render: function() {
+            this.$el.html(this.template({ index: this.attributes.rel }));
+            return this;
+        },
+        remove: function(event) {
+            var target = $(event.currentTarget).parent();
             var selected = target;
             do {
                 selected = selected.prev();
@@ -64,18 +27,107 @@
 
             selectFile(selected.attr('rel'));
             target.addClass('removed');
-            target.off('click');
 
             return false;
-        });
+        }
+    });
 
-        clone.click(function() {
-            var index = $(this).attr('rel');
-            selectFile(index);
-        });
+    var GistFileListView = Backbone.View.extend({
+        events: {
+            'click .file': 'selectFile'
+        },
+        initialize: function() {
+            this.count = 0;
+            this.createFile();
+        },
+        selectFile: function(event) {
+            var target = $(event.currentTarget);
+            if (target.hasClass('removed'))
+                return;
 
-        return clone;
-    }
+            selectFile(target.attr('rel'));
+        },
+        createFile: function() {
+            var className = 'file current';
+            if (this.count !== 0)
+                className += ' append';
+
+            var gistFileView = new GistFileView({
+                className: className,
+                attributes: { rel: this.count++ }
+            });
+            this.$el.append(gistFileView.render().$el);
+            selectFile(this.count - 1);
+        }
+    });
+
+    var EditPage = Backbone.View.extend({
+        events: {
+            'click h1'              : 'back',
+            'click #add-file'       : 'addFile',
+            'click #create-private' : 'createPrivateGist',
+            'click #create-public'  : 'createPublicGist',
+            'submit #form'          : 'submit'
+        },
+        initialize: function() {
+            $('#error').hide();
+
+            this.gistFileListView = new GistFileListView({ el: '#files' });
+        },
+        back: function() {
+            window.location.href = 'overview.html';
+        },
+        addFile: function() {
+            this.gistFileListView.createFile();
+            return false;
+        },
+        createPrivateGist: function() {
+            $.data($('#form')[0], 'public', false);
+        },
+        createPublicGist: function() {
+            $.data($('#form')[0], 'public', true);
+        },
+        submit: function(event) {
+            var isPublic = $.data(event.currentTarget, 'public');
+            var info = this.getFiles();
+            if (typeof info !== 'undefined' && info !== null)
+                gister.create(info.description, isPublic, info.files, function(gist) {
+                    window.location.href = 'overview.html';
+                });
+
+            return false;
+        },
+        getFiles: function() {
+            var description = $('#files .description').val();
+            var files = {};
+
+            var fileList = $('#files .file').not('.removed');
+            for (var index = 0; index < fileList.length; index++) {
+                var field = $(fileList[index]);
+                var filename = field.find('.filename').val();
+                var content = field.find('.content').val();
+                if (content.length === 0) {
+                    $('#error').text('Content should not be empty').show();
+                    selectFile(field.attr('rel'));
+                    field.find('.content').focus();
+
+                    return null;
+                }
+
+                if (filename in files) {
+                    $('#error').text('Contents can\'t have duplicate filenames').show();
+                    selectFile(field.attr('rel'));
+                    field.find('.filename').focus();
+
+                    return null;
+                }
+
+                files[filename] = { content: content };
+            }
+
+            return { description: description, files: files };
+        }
+    });
 
     function selectFile(index) {
         var files = $('#files .file');
@@ -83,37 +135,5 @@
         $(files[index]).addClass('current');
     }
 
-    function getFiles() {
-        var description = $('#files .description').val();
-        var files = {};
-
-        var fileFields = $('#files .file');
-        for (var index = 0, len = fileFields.length; index < len; index++) {
-            var field = $(fileFields[index]);
-            if (field.hasClass('removed'))
-                continue;
-
-            var filename = field.find('.filename').val();
-            var content = field.find('.content').val();
-            if (content.length === 0) {
-                $('#error').text('Content should not be empty').show();
-                selectFile(field.attr('rel'));
-                field.find('.content').focus();
-
-                return null;
-            }
-
-            if (filename in files) {
-                $('#error').text('Contents can\'t have duplicate filenames').show();
-                selectFile(field.attr('rel'));
-                field.find('.filename').focus();
-
-                return null;
-            }
-
-            files[filename] = { content: content };
-        }
-
-        return { description: description, files: files };
-    }
+    var editPage = new EditPage({ el: 'body' });
 })();
