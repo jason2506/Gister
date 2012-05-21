@@ -1,5 +1,6 @@
 (function() {
-    var gister = new Gister();
+    var bgPage = chrome.extension.getBackgroundPage();
+    var gister = bgPage.gister;
 
     $('h1').click(function() {
         window.location.href = 'overview.html';

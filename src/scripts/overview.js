@@ -1,5 +1,6 @@
 (function() {
-    var gister = new Gister();
+    var bgPage = chrome.extension.getBackgroundPage();
+    var gister = bgPage.gister;
 
     gister.getAll(function(gists) {
         $('#loading').remove();

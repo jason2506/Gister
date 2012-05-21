@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script src="scripts/jquery.js"></script>
+    <script src="scripts/gister.js"></script>
     <script>
+      var gister = new Gister();
+
       function save(user, pwd) {
           if (typeof(user) != 'string' || typeof(pwd) != 'string')
               localStorage.auth = undefined;
